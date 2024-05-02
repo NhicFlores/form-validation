@@ -20,8 +20,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { z } from 'zod'
+import { useState } from 'react'
+import { useFormStatus } from 'react-dom'
 
 const RegisterForm = () => {
+    const [loading, setLoading] = useState(false);
     const form = useForm({
         resolver: zodResolver(RegisterSchema),
         defaultValues: {
@@ -32,7 +35,10 @@ const RegisterForm = () => {
         }
     })
 
+    const { pending } = useFormStatus();
+
     const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
+        setLoading(true);
         console.log(data);
         //backend/db logic 
     }
@@ -115,8 +121,8 @@ const RegisterForm = () => {
                     )}
                 />
             </div>
-            <Button type='submit' className='w-full'>
-                Register
+            <Button type='submit' className='w-full' disabled={pending}>
+                {loading ? "Loading..." : "Register"}
             </Button>
         </form>
       </Form>

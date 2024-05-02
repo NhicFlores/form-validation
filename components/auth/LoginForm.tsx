@@ -20,28 +20,36 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { z } from 'zod'
+import { useFormStatus } from 'react-dom'
+import { useState } from 'react'
 
 const LoginForm = () => {
-    const form = useForm({
-        resolver: zodResolver(LogInSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-        }
-    })
+  const [loading, setLoading] = useState(false);
 
-    const onSubmit = (data: z.infer<typeof LogInSchema>) => {
-        console.log(data);
-        //backend/db logic 
-    }
-    //handle submit is a form method that takes a callback function - it is only called once form is validated 
+  const form = useForm({
+      resolver: zodResolver(LogInSchema),
+      defaultValues: {
+          email: "",
+          password: "",
+      }
+  })
 
-    //FormField creates a controlled component 
-    //controlled component means the state is handled within the component and not by the react DOM 
-    //use hook form uses state for us 
-    //form.control "stores" that state 
-    //name corresponds to the schema and default values 
-    //uncontrolled component - NOTE TODO: 
+  const onSubmit = (data: z.infer<typeof LogInSchema>) => {
+    setLoading(true);
+    console.log(data);
+    //backend/db logic 
+    //set loading to false after back end logic 
+  }
+
+  const { pending } = useFormStatus();
+  //handle submit is a form method that takes a callback function - it is only called once form is validated 
+
+  //FormField creates a controlled component 
+  //controlled component means the state is handled within the component and not by the react DOM 
+  //use hook form uses state for us 
+  //form.control "stores" that state 
+  //name corresponds to the schema and default values 
+  //uncontrolled component - NOTE TODO: 
   return (
     <CardWrapper
     header="Log In"
@@ -83,8 +91,8 @@ const LoginForm = () => {
                     )}
                 />
             </div>
-            <Button type='submit' className='w-full'>
-                Log In
+            <Button type='submit' className='w-full' disabled={pending}>
+                {loading ? "Loading..." : "Log In"}
             </Button>
         </form>
       </Form>
