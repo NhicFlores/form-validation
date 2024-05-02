@@ -16,3 +16,12 @@ export const RegisterSchema = z.object({
 })
 //use bcrypt for matching passwords on server side 
 //this does allow the form to be submitted - we should come up with client side validation for this 
+
+export const LogInSchema = z.object({
+    email: z.string().email({
+        message: 'please enter a valid email address'
+    }),
+    password: z.string().min(6, {
+        message: 'password must be at least 6 characters long'
+    }),
+})
