@@ -89,11 +89,13 @@ const FormLabel = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
   const { error, formItemId } = useFormField()
-
+  //changed the text to stay black on error 
+  //NOTE: I'll leave the conditional in case i 
+  //want to implement some styling change later 
   return (
     <Label
       ref={ref}
-      className={cn(error && "text-destructive", className)}
+      className={cn(error && "text-black", className)}
       htmlFor={formItemId}
       {...props}
     />
